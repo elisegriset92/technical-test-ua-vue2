@@ -1,7 +1,7 @@
 # Technical test of Useragents for VueJS/NuxtJS/TailwindCSS
 
 ## Requirement
- - Node >= 14
+ - Node >= 14 <= 16
  - Yarn to install with npm
 
 ## Setup main folder for husky hook
