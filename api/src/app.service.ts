@@ -1,6 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { v4 as uuid } from 'uuid';
-import { orderBy } from 'lodash';
 
 import { Task, TaskStatus } from './task.entity';
 import { FiltersQuery } from './filters-query.dto';
@@ -16,7 +15,7 @@ const seed: Partial<Task>[] = [
     title: 'Install the server',
     description: `cd api;yarn install; yarn start:dev; (to start the nestjs server)`,
     status: TaskStatus.TODO,
-    date: new Date('2022-01-01 00:00:02').toISOString(),
+    date: new Date('2023-10-01 00:00:02').toISOString(),
   },
   {
     title: 'Install the front',
@@ -41,10 +40,23 @@ export class AppService {
   }) as Task[];
 
   findAll(filters: FiltersQuery): Task[] {
-    const _tasks = filters.status
-      ? this.tasks.filter((t) => t.status === filters.status)
-      : this.tasks;
-
+    let _tasks = []
+    if (filters.status) {
+      _tasks = this.tasks.filter((t) => t.status === filters.status)
+    } else {
+      _tasks = this.tasks.sort((a, b) => {
+        if (a.date && b.date) {
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        }
+        if (a.date) {
+          return -1;
+        }
+        if (b.date) {
+          return 1;
+        }
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      });
+    }
     // The tasks must be listed by ascending deadline `date`, then by order of creation `createdAt` if no deadline `date`.
     // You can use external libraries to perform this.
     return _tasks;
