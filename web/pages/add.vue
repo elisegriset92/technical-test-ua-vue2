@@ -1,5 +1,5 @@
 <template>
-  <div class="m-10 w-96 container mx-auto">
+  <div class="m-10 md:w-1/4 md:mx-auto">
     <SvgIcon name="icons/plus-circle" class="p-1 mx-auto w-10 h-10 bg-black text-white rounded" />
     <h1 class="font-extrabold text-center text-3xl my-6">
       Add a task
@@ -13,11 +13,10 @@
 export default {
   methods: {
     postTask (event) {
-      const [err, task] = this.$api.tasks.createTask(event)
+      const [err] = this.$api.tasks.createTask(event)
       if (err) {
         throw new Error(err)
       }
-      console.log(task)
     }
   }
 }

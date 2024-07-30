@@ -1,5 +1,5 @@
 <template>
-  <div class="m-10 container mx-auto">
+  <div class="m-10 container mx-auto px-2 md:p-0">
     <p v-if="$fetchState.pending">
       Fetching tasks...
     </p>
@@ -7,12 +7,12 @@
       Unable to fetch tasks.
     </p>
     <div v-else>
-      <div class="flex justify-between">
+      <div class="flex justify-between ">
         <h1 class="text-lg">
           My Tasks
         </h1>
         <FormSelect
-          class="w-1/5"
+          class="md:w-1/5"
           label=""
           name="filterStatus"
           :value="statusOptions[0].value"

@@ -1,5 +1,5 @@
 <template>
-  <div class="m-10 w-96 container mx-auto">
+  <div class="m-10 md:w-1/4 md:mx-auto">
     <SvgIcon name="icons/pencil" class="p-1 mx-auto w-10 h-10 bg-black text-white rounded" />
     <h1 class="font-extrabold  text-center text-3xl my-6">
       Edit a task

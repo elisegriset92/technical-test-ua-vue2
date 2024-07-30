@@ -1,33 +1,37 @@
 <template>
-  <div class="max-w-sm">
-    <div class="bg-white rounded-md px-8 pt-6 pb-8 mb-4 border-gray-200 border-solid border-1">
-      <div class="mb-4 flex flex-col gap-2">
-        <FormInput label="Title" name="title" :value="title" @input="update('title', $event)" />
-        <FormInputTextArea
-          label="Describe it"
-          name="description"
-          :value="description"
-          @input="update('description', $event)"
-        />
-        <div class="flex gap-2">
-          <FormInput type="date" label="Date" name="date" :value="date" @input="update('date', $event)" />
-          <FormSelect
-            label="Status"
-            name="status"
-            :value="status"
-            :options="statusOptions"
-            @input="update('status', $event)"
-          />
-        </div>
-      </div>
-      <div>
-        <button class="bg-indigo-500 w-full text-sm text-white py-2 px-4 rounded" @click="submitTask">
-          Submit
-        </button>
-        <button class="bg-gray-50 mt-4 w-full text-sm py-2 px-4 rounded">
-          Cancel
-        </button>
-      </div>
+  <div class="border-solid border-2 border-gray-100 rounded-xl bg-white py-4 md:w-[448px] md:h-[487px] flex flex-col justify-evenly px-8">
+    <FormInput
+      label="Title"
+      name="title"
+      :value="taskValue.title ? taskValue.title : ''"
+      @input="update('title', $event)"
+    />
+    <span v-if="errors.title" class="text-xs text-red-600">{{ errors.title }}</span>
+
+    <FormInputTextArea
+      label="Describe it"
+      name="description"
+      :value="taskValue.description ? taskValue.description : ''"
+      @input="update('description', $event)"
+    />
+    <span v-if="errors.description" class="text-xs text-red-600">{{ errors.description }}</span>
+    <div class="flex gap-2">
+      <FormInput type="date" label="Date" name="date" :value="dateFormatted" @input="update('date', $event)" />
+      <FormSelect
+        label="Status"
+        name="status"
+        :value="taskValue.status ? taskValue.status.value : 'TODO'"
+        :options="statusOptions"
+        @input="update('status', $event)"
+      />
+    </div>
+    <div>
+      <button class="bg-indigo-500 w-full text-sm text-white py-2 px-4 rounded" @click="submitTask">
+        Submit
+      </button>
+      <button class="bg-gray-50 mt-4 w-full text-sm py-2 px-4 rounded" @click="submitTask">
+        Cancel
+      </button>
     </div>
   </div>
 </template>
@@ -54,17 +58,37 @@ export default {
       date: '',
       title: '',
       description: '',
-      status: 'TODO'
+      status: 'TODO',
+      errors: {}
     }
   },
-  mounted () {
-    this.retrieveTask()
+  computed: {
+    taskValue () {
+      return this.task
+    },
+    dateFormatted () {
+      return this.taskValue.date ? moment(this.taskValue.date).format('YYYY-MM-DD') : ''
+    }
   },
   methods: {
+    validateForm () {
+      this.errors = {}
+      if (!this.title) {
+        this.errors.title = 'Le titre est requis.'
+      }
+      if (!this.description) {
+        this.errors.description = 'La description est requise.'
+      }
+      return Object.keys(this.errors).length === 0
+    },
     update (field, event) {
+      this.errors = {}
       this[field] = event
     },
     submitTask () {
+      if (!this.validateForm()) {
+        return
+      }
       const taskUpdated = {
         date: this.date ? moment(this.date).format() : undefined,
         title: this.title,
@@ -74,19 +98,8 @@ export default {
       this.$emit('formUpdate', taskUpdated)
       this.$router.push('/')
     },
-    retrieveTask () {
-      if (this.task && this.task.date) {
-        this.date = moment(this.task.date).format('YYYY-MM-DD')
-      }
-      if (this.task && this.task.title) {
-        this.title = this.task.title
-      }
-      if (this.task && this.task.description) {
-        this.description = this.task.description
-      }
-      if (this.task && this.task.status) {
-        this.status = this.task.status.value
-      }
+    goBack () {
+      this.$router.push('/')
     }
   }
 }

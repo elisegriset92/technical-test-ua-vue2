@@ -1,5 +1,5 @@
 <template>
-  <div class="m-10 container mx-auto bg-white rounded-md p-2">
+  <div class="m-10 container mx-auto bg-white border-solid border-2 border-gray-100 rounded-xl p-2">
     <div class="divide-y">
       <div v-for="(task, index) in tasks" :key="index" class="p-4">
         <div class="flex justify-between">
@@ -33,7 +33,7 @@
             </div>
             <div v-if="task.date" class="flex">
               <SvgIcon name="icons/calendar" class="p-1 w-5 h-5 bg-gray-400 text-white rounded" />
-              <p class="text-sm ml-2 text-gray-500">
+              <p class="text-xs md:text-sm ml-2 text-gray-500">
                 {{ getDate(task.date) }}
               </p>
             </div>
