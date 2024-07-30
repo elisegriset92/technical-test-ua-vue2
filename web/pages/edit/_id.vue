@@ -1,9 +1,11 @@
 <template>
-    <div class="m-10 w-96 container mx-auto">
-        <SvgIcon name="icons/pencil" class="p-1 mx-auto w-10 h-10 bg-black text-white rounded" />
-        <h1 class="font-extrabold  text-center text-3xl my-6">Edit a task</h1>
-        <Form @formUpdate="editTask" :task="task"/>
-    </div>
+  <div class="m-10 w-96 container mx-auto">
+    <SvgIcon name="icons/pencil" class="p-1 mx-auto w-10 h-10 bg-black text-white rounded" />
+    <h1 class="font-extrabold  text-center text-3xl my-6">
+      Edit a task
+    </h1>
+    <Form :task="task" @formUpdate="editTask" />
+  </div>
 </template>
 
 <script>
@@ -24,7 +26,7 @@ export default {
   },
   methods: {
     async editTask (body) {
-      const [err] = await this.$api.tasks.updateTask(body)
+      const [err] = await this.$api.tasks.updateTask(this.$route.params.id, body)
       if (err) {
         throw new Error(err)
       }

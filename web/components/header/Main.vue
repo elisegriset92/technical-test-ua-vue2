@@ -5,9 +5,10 @@
         <SvgIcon name="icons/logo" class="w-10 h-10" />
         Task editor
       </NuxtLink>
-      <NuxtLink to="/add" v-if="$route.name === 'index'">
+      <NuxtLink v-if="$route.name === 'index'" to="/add">
         <button
-          class="hover:bg-indigo-600 bg-white text-indigo-600 font-semibold hover:text-white py-2 px-4 border rounded-md">
+          class="hover:bg-indigo-600 bg-white text-indigo-600 font-semibold hover:text-white py-2 px-4 border rounded-md"
+        >
           Add
         </button>
       </NuxtLink>

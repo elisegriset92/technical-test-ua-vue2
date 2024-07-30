@@ -8,16 +8,19 @@
     </p>
     <div v-else>
       <div class="flex justify-between">
-        <h1 class="text-lg">My Tasks</h1>
+        <h1 class="text-lg">
+          My Tasks
+        </h1>
         <FormSelect
-        class="w-1/5"
-        label=""
-        name="filterStatus"
-        :value="statusOptions[0].value"
-        :options="statusOptions"
-        @input="filter" />
+          class="w-1/5"
+          label=""
+          name="filterStatus"
+          :value="statusOptions[0].value"
+          :options="statusOptions"
+          @input="filter"
+        />
       </div>
-      <ListTable :tasks="tasks" />
+      <ListTable :tasks="tasks" @delete="deleteTask" />
     </div>
   </div>
 </template>
@@ -58,6 +61,10 @@ export default {
     },
     filter (status) {
       this.getTodos(status === 'ALL' ? undefined : status)
+    },
+    deleteTask (id) {
+      this.tasks = this.tasks.filter(task => task.id !== id)
+      this.$api.tasks.deleteTask(id)
     }
   }
 }

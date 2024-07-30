@@ -86,8 +86,8 @@ export default class TasksService extends ApiModel {
    * @param {*} form
    * @returns Task
    */
-  createTask (task) {
-    return this.post('', task, {
+  createTask (form) {
+    return this.post('', form, {
       fields: TASK_FIELDS
     })
   }
@@ -99,8 +99,8 @@ export default class TasksService extends ApiModel {
    * @param {*} form
    * @returns
    */
-  updateTask (body) {
-    return this.patch('', body, {
+  updateTask (id, form) {
+    return this.patch(`${id}`, form, {
       fields: TASK_FIELDS
     })
   }
@@ -112,6 +112,6 @@ export default class TasksService extends ApiModel {
    * @returns
    */
   deleteTask (id) {
-    return this.delete('', id)
+    return this.delete(`${id}`)
   }
 }
